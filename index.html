@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AM HERE | Find Local Services</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #18212f;
+    }
+    header {
+      background: #142b4a;
+      color: white;
+      padding: 22px 18px;
+    }
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; color: #dce8f7; }
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px 16px;
+    }
+    .search, .service, .booking {
+      background: white;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px #152b4810;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input, select {
+      border: 1px solid #ccd5e0;
+      background: white;
+    }
+    button {
+      border: 0;
+      background: #176bde;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .service h3 { margin-top: 0; }
+    .service p { color: #596579; }
+    .price { font-weight: bold; color: #176bde; }
+    #message { line-height: 1.5; }
+    footer {
+      text-align: center;
+      padding: 22px;
+      color: #687386;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AM HERE</h1>
+    <p>Your local services, all in one place.</p>
+  </header>
+
+  <main>
+    <section class="search">
+      <h2>Find a service</h2>
+      <p>What do you need help with today?</p>
+      <input id="search" placeholder="Search cleaning, plumbing...">
+      <button onclick="findServices()">Find services</button>
+    </section>
+
+    <h2>Explore services</h2>
+    <div id="services">
+      <section class="service" data-name="cleaning">
+        <h3>🧹 Home Cleaning</h3>
+        <p>Find help keeping your home clean.</p>
+        <button onclick="book('Home Cleaning')">Request a booking</button>
+      </section>
+
+      <section class="service" data-name="plumbing">
+        <h3>🔧 Plumbing</h3>
+        <p>Find help with household plumbing needs.</p>
+        <button onclick="book('Plumbing')">Request a booking</button>
+      </section>
+
+      <section class="service" data-name="lawn care gardening">
+        <h3>🌿 Lawn Care</h3>
+        <p>Find help with lawn care and gardening.</p>
+        <button onclick="book('Lawn Care')">Request a booking</button>
+      </section>
+
+      <section class="service" data-name="moving">
+        <h3>📦 Moving Help</h3>
+        <p>Find assistance for your next move.</p>
+        <button onclick="book('Moving Help')">Request a booking</button>
+      </section>
+    </div>
+
+    <section class="booking" id="booking" hidden>
+      <h2>Request a booking</h2>
+      <p id="chosen"></p>
+      <form onsubmit="submitBooking(event)">
+        <label>Your name
+          <input id="customer" required>
+        </label>
+        <label>Your contact information
+          <input id="contact" required>
+        </label>
+        <label>Preferred date
+          <input id="date" type="date" required>
+        </label>
+        <label>Additional details
+          <input id="details" placeholder="Describe what you need">
+        </label>
+        <button type="submit">Submit request</button>
+      </form>
+      <p id="message"></p>
+    </section>
+  </main>
+
+  <footer>AM HERE © 2026 · Connecting people with local services</footer>
+
+  <script>
+    let selectedService = "";
+
+    function findServices() {
+      const query = document.getElementById("search")
+        .value.trim().toLowerCase();
+      let count = 0;
+
+      document.querySelectorAll(".service").forEach(service => {
+        const match = service.dataset.name.includes(query) ||
+          service.innerText.toLowerCase().includes(query);
+        service.hidden = !match;
+        if (match) count++;
+      });
+
+      if (count === 0) {
+        alert("No matching service found. Try another search.");
+      }
+    }
+
+    function book(service) {
+      selectedService = service;
+      document.getElementById("chosen").textContent =
+        "Selected service: " + service;
+      document.getElementById("booking").hidden = false;
+      document.getElementById("message").textContent = "";
+      document.getElementById("booking").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function submitBooking(event) {
+      event.preventDefault();
+      document.getElementById("message").textContent =
+        "Your booking form is complete, " +
+        document.getElementById("customer").value +
+        ". This is a demo: your request has not been sent to a service provider.";
+    }
+  </script>
+</body>
+</html>
